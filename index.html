@@ -4,7 +4,21 @@
 <h1 style="font-size:60px; font-family:arial; text-align:center; color:white;">Geopolitics</h1>
 <p style="font-size:40px; font-family:arial; text-align:center; color:white;">Upload presentation</p>
 <hr>
-<iframe src="testpresentation.pdf" height="360" width="640"></iframe>
+<form target="presentationframe" autocomplete="on">
+<label id="label" for="presentation" style="color:white;">Upload file:</label>
+<input type="text" id="presentation" name="presentation" target="presentationframe"><br>
+<button id="submit" onclick="openFile()">Submit</button>
+</form>
+<br><br>
+<iframe id="presentationframe" height="360" width="640" name="presentationframe"></iframe>
+<script>
+const button=document.getElementById("submit");
+const iframe=document.getElementById("presentationframe");
+const input=document.getElementById("presentation")
+function openFile() {
+	iframe.src=input.value
+}
+</script>
 </body>
 </html>
 <title>Geopolitics w/ Timer WIP</title>
@@ -14,6 +28,8 @@ git config --global user.email natedude2007@gmail.com
 git config --global init.default branch main
 cd c:/users/natha/gitstuff
 git init
+git branch branchnamehere
+git switch branchnamehere
 git status
 git add index.html
 git commit -m "text here"
