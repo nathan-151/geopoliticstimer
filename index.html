@@ -6,17 +6,17 @@
 <hr>
 <form target="presentationframe" autocomplete="on">
 <label id="label" for="presentation" style="color:white;">Upload file:</label>
-<input type="text" id="presentation" name="presentation" target="presentationframe"><br>
-<button id="submit" onclick="openFile()">Submit</button>
+<input type="url" id="presentation" name="presentation" target="presentationframe" onchange="openFile()"><br>
 </form>
+<p><a id="presentationlink" href="" target="presentationframe" style="color:white;">Click here to open presentation after inserting link above</a></p>
 <br><br>
-<iframe id="presentationframe" height="360" width="640" name="presentationframe"></iframe>
+<iframe src="" id="presentationframe" height="569" width="960" name="presentationframe"></iframe>
 <script>
 const button=document.getElementById("submit");
-const iframe=document.getElementById("presentationframe");
-const input=document.getElementById("presentation")
+const iframe=document.getElementById("presentationlink");
+const input=document.getElementById("presentation");
 function openFile() {
-	iframe.src=input.value
+	iframe.href=input.value;
 }
 </script>
 </body>
