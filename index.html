@@ -4,21 +4,43 @@
 <h1 style="font-size:60px; font-family:arial; text-align:center; color:white;">Geopolitics</h1>
 <p style="font-size:40px; font-family:arial; text-align:center; color:white;">Upload presentation</p>
 <hr>
-<form target="presentationframe" autocomplete="on">
-<label id="label" for="presentation" style="color:white;">Upload file:</label>
-<input type="url" id="presentation" name="presentation" target="presentationframe" onchange="openFile()"><br>
+<form>
+<label id="label" for="fileinput" style="color:white;">Select slide:</label>
+<input type="file" id="fileinput" name="fileinput" style="color:white;" multiple></input><br>
+<button id="button" onclick="openFile(event)">Add to slideshow</button>
 </form>
-<p><a id="presentationlink" href="" target="presentationframe" style="color:white;">Click here to open presentation after inserting link above</a></p>
 <br><br>
-<iframe src="" id="presentationframe" height="569" width="960" name="presentationframe"></iframe>
+<img id="presentationframe" height="569" width="960" name="presentationframe"></img><br>
+<button id="back" onclick="goBack()">Back</button>
+<button id="forward" onclick="goForward()">Forward</button>
 <script>
-const button=document.getElementById("submit");
-const iframe=document.getElementById("presentationlink");
-const input=document.getElementById("presentation");
-function openFile() {
-	iframe.href=input.value;
+let image=document.getElementById("presentationframe");
+let button=document.getElementById("button");
+let input=document.getElementById("fileinput");
+let slidelist=[];
+let count=0
+function openFile(event) {
+	event.preventDefault();
+	const files = input.files;
+	for (let i = 0; i < files.length; i++) {
+        	slidelist.push(URL.createObjectURL(files[i]));
+	}
+	image.src=slidelist[0];
 }
-</script>
+function goBack() {
+	count--;
+	if (count < 0) {
+		count = slidelist.length - 1;
+	}
+	image.src = slidelist[count];
+}
+function goForward() {
+	count++;
+	if (count > slidelist.length - 1) {
+		count = 0;
+	}
+	image.src = slidelist[count];
+}</script>
 </body>
 </html>
 <title>Geopolitics w/ Timer WIP</title>
