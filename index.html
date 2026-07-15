@@ -56,6 +56,7 @@ let count=0;
 let timeupvar=0;
 let pauser=false;
 let resetter=false;
+let int=null;
 time="00:00"
 function openFile(event) {
 	event.preventDefault();
@@ -89,11 +90,10 @@ function setTime() {
 }
 function startTime() {
 	time=document.getElementById("timer").textContent.split("");
-	if (resetter==true) {
+	if (int!=null) {
 		clearInterval(int);
-		resetter=false;
 	}
-	let int=setInterval(countDown, 1000);
+	int=setInterval(countDown, 1000);
 	function countDown() {
 		if (pauser==false) {
 			time[4]--;
@@ -131,10 +131,11 @@ function pauseTimer() {
 	}
 }
 function resetTimer() {
+	clearInterval(int);
+	int=null;
 	document.getElementById("timer").textContent="00:00";
 	time=document.getElementById("timer").textContent.split("");
 	pauser=true;
-	alert(document.getElementById("timer").style.color);
 	document.getElementById("pause").style.backgroundColor="yellow";
 }
 </script>
