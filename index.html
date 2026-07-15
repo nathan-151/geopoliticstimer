@@ -1,24 +1,62 @@
 <!DOCTYPE html>
 <html>
+<style>
+div.container {
+	width:140%;
+	overflow:auto;
+}
+div.container div {
+	width:50%;
+	float:left;
+}
+.right {
+	position:absolute;
+	right:375px;
+}
+</style>
 <body style="background-color:darkslategray;">
 <h1 style="font-size:60px; font-family:arial; text-align:center; color:white;">Geopolitics</h1>
-<p style="font-size:40px; font-family:arial; text-align:center; color:white;">Upload presentation</p>
 <hr>
 <form>
-<label id="label" for="fileinput" style="color:white;">Select slide:</label>
+<label id="label" for="fileinput" style="color:white;">Select slides:</label>
 <input type="file" id="fileinput" name="fileinput" style="color:white;" multiple></input><br>
 <button id="button" onclick="openFile(event)">Add to slideshow</button>
 </form>
-<br><br>
-<img id="presentationframe" height="569" width="960" name="presentationframe"></img><br>
-<button id="back" onclick="goBack()">Back</button>
-<button id="forward" onclick="goForward()">Forward</button>
+<div class="container">
+	<div>
+		<img id="presentationframe" height="569" width="960" name="presentationframe"></img><br>
+	</div>
+	<div style="background-color:darkslategray;">
+		<p id="timer" style="font-size:100px; font-family:arial; color:white;">00:00</p>
+	</div>
+</div>
+<div class="container">
+	<div>
+		<button id="back" style="font-size:30px" onclick="goBack(); resetTimer()">Back</button>
+		<button id="forward" style="font-size:30px" onclick="goForward(); resetTimer()">Forward</button>
+	</div>
+	<div>
+		<label id="timelabel" for="setTime" style="color:white; font-size:15px; font-family:arial;">Set time:</label>
+		<input id="timeInput" type="text" style="font-size:15px"></input>
+	</div>
+</div>
+<div class="right">
+	<div>
+		<button id="set" onclick="setTime(); startTime()">Set</button>
+		<button id="pause" onclick="pauseTimer()">Pause</button>
+		<button id="reset" onclick="resetTimer()">Reset</button>
+	</div>
+</div>
 <script>
 let image=document.getElementById("presentationframe");
 let button=document.getElementById("button");
 let input=document.getElementById("fileinput");
 let slidelist=[];
-let count=0
+let count=0;
+let timeupvar=0;
+let pauser=false;
+let resetter=false;
+time="00:00"
 function openFile(event) {
 	event.preventDefault();
 	const files = input.files;
@@ -40,11 +78,69 @@ function goForward() {
 		count = 0;
 	}
 	image.src = slidelist[count];
-}</script>
+}
+function setTime() {
+	if (document.getElementById("timeInput").value.length!=5) {
+		alert("Invalid time input: Please use format XX:XX");
+	} else {
+		document.getElementById("timer").textContent=document.getElementById("timeInput").value;
+		document.getElementById("timer").style.color="white";
+	}
+}
+function startTime() {
+	time=document.getElementById("timer").textContent.split("");
+	if (resetter==true) {
+		clearInterval(int);
+		resetter=false;
+	}
+	let int=setInterval(countDown, 1000);
+	function countDown() {
+		if (pauser==false) {
+			time[4]--;
+			if (time[4]<0) {
+				time[4]=9;
+				time[3]--;
+				if (time[3]<0) {
+					time[3]=5;
+					time[1]--;
+					if (time[1]<0) {
+						time[1]=9;
+						time[0]--;
+						if (time[0]<0) {
+							time[0]=0;
+							time[1]=0;
+							time[3]=0;
+							time[4]=0;
+							document.getElementById("timer").style.color="yellow";
+							clearInterval(int);
+						}
+					}
+				}
+			}
+			document.getElementById("timer").textContent=time.join("");
+		}
+	}
+}
+function pauseTimer() {
+	if (pauser==false) {
+		pauser=true;
+		document.getElementById("pause").style.backgroundColor="yellow";
+	} else {
+		pauser=false;
+		document.getElementById("pause").style.backgroundColor="white"
+	}
+}
+function resetTimer() {
+	document.getElementById("timer").textContent="00:00";
+	time=document.getElementById("timer").textContent.split("");
+	pauser=true;
+	alert(document.getElementById("timer").style.color);
+	document.getElementById("pause").style.backgroundColor="yellow";
+}
+</script>
 </body>
 </html>
 <title>Geopolitics w/ Timer WIP</title>
-<!-- W3Schools chapter: HTML CSS -->
 <!-- useful git commands: git config --global user.name "Nathan Pak"
 git config --global user.email natedude2007@gmail.com
 git config --global init.default branch main
